@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430865503318",
+    "project_id": "bagdrop-e815b",
+    "storage_bucket": "bagdrop-e815b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430865503318:android:c70f637be58f11c65cd7f7",
+        "android_client_info": {
+          "package_name": "com.amedtorres.bagdrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3wwaTZaM6pUSqcRp6u-b89QO9sgL_Kbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

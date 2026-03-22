@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">BagDrop</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="msjBienvenida">Bienvenido a BagDrop</string>
+    <string name="msjCorreo">Correo electrónico</string>
+    <string name="msjContraseña">Contraseña</string>
+    <string name="btnIniciarSesion">Iniciar Sesión</string>
+
+    <string name="msjNoCuenta">¿No tienes cuenta? Regístrate aquí"></string>
+    <string name="btnRegistrarse">Registrarse</string>
+    <string name="msjRegistro">Registro exitoso</string>
+
+</resources>
