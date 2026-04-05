@@ -3,13 +3,28 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--  ******* PANTALLA LOGIN ******* -->
+
     <string name="msjBienvenida">Bienvenido a BagDrop</string>
+    <string name="tvIniciarSesion">Iniciar Sesión</string>
     <string name="msjCorreo">Correo electrónico</string>
     <string name="msjContraseña">Contraseña</string>
-    <string name="btnIniciarSesion">Iniciar Sesión</string>
+    <string name="btnAcceder">Acceder</string>
+    <string name="tvNoCuenta">¿No tienes cuenta? Regístrate aquí</string>
 
-    <string name="msjNoCuenta">¿No tienes cuenta? Regístrate aquí"></string>
+
+    <!--  ******* PANTALLA REGISTRARSE ******* -->
+
+    <string name="tvRegistrarse">Registarse en BagDrop</string>
+    <string name="tvDatosPersonales">Ingresa tu información personal</string>
+    <string name="etNombre">Nombre Completo</string>
+    <string name="etIngresajCorreo">Correo electrónico</string>
+    <string name="etTelefono">Número de teléfono</string>
+    <string name="etCrearContraseña">Crear Contraseña</string>
+    <string name="btnCrearCuenta">Crear Cuenta</string>
     <string name="btnRegistrarse">Registrarse</string>
-    <string name="msjRegistro">Registro exitoso</string>
+    <string name="msjRegistroExitoso">Registro exitoso</string>
+    <string name="tvSiCuenta">¿Ya tienes cuenta? Accede aquí</string>
+
 
 </resources>
