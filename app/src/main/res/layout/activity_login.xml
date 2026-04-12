@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:padding="20dp"
     tools:context=".ui.auth.LoginActivity">
 
@@ -51,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="20dp"
         android:hint="@string/msjCorreo"
         app:layout_constraintTop_toBottomOf="@+id/tvLogin">
 
@@ -66,6 +68,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
         android:hint="@string/msjContraseña"
         app:passwordToggleEnabled="true"
@@ -84,6 +87,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:text="@string/btnAcceder"
+        android:layout_marginHorizontal="20dp"
         android:textSize="18sp"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,13 +95,13 @@
         app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
     <TextView
-        android:id="@+id/tvGoToRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvRegister"
+        android:layout_width="274dp"
+        android:layout_height="38dp"
         android:layout_marginTop="30dp"
         android:padding="8dp"
         android:text="@string/tvNoCuenta"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="?attr/colorSurfaceVariant"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
