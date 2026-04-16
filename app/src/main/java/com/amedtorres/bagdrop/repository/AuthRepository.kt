@@ -77,7 +77,7 @@ class AuthRepository {
                     // sifalla en el inicio de sesion
                     val mensajeError = when (task.exception) {
                         is com.google.firebase.auth.FirebaseAuthInvalidUserException -> "El usuario no existe."
-                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "Contraseña incorrecta."
+                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "Correo no registrado o contraseña incorrecta."
                         else -> "Error en el inicio de sesión: ${task.exception?.message}"
                     }
                     onComplete(false, mensajeError)
