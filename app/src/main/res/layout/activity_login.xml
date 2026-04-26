@@ -50,7 +50,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEmail"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -67,7 +66,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -90,8 +88,8 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="?attr/colorPrimary"
-        android:text="@string/btnAcceder"
         android:textColor="?attr/colorOnSecondary"
+        android:text="@string/btnAcceder"
         android:textSize="18sp"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"

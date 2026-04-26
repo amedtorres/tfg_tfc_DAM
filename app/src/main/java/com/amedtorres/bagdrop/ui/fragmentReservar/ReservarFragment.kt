@@ -3,16 +3,19 @@ package com.amedtorres.bagdrop.ui.fragmentReservar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.amedtorres.bagdrop.R
 import com.amedtorres.bagdrop.databinding.FragmentReservarBinding
+import com.amedtorres.bagdrop.model.Reserva
+import com.amedtorres.bagdrop.repository.ReservaRepository
 import com.amedtorres.bagdrop.ui.menu.MisReservasFragment
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -21,6 +24,10 @@ class ReservarFragment : Fragment() {
 
     private var _binding: FragmentReservarBinding? = null
     private val binding get() = _binding!!
+
+    // 1. Instanciamos nuestro Repositorio y FirebaseAuth
+    private val reservaRepository = ReservaRepository()
+    private val auth = FirebaseAuth.getInstance()
 
     // Contadores actuales para las cantidades
     private var cantPeq = 0
@@ -49,85 +56,81 @@ class ReservarFragment : Fragment() {
         botonesPrincipales()
     }
 
-    // contadores con límites independientes
+    // ==========================================
+    // CONTADORES
+    // ==========================================
     private fun botonesContadores() {
-        // MALETAS PEQUEÑAS - Límite 30
-        binding.btnMasPeq.setOnClickListener {
-            if (cantPeq < MAX_PEQ) { cantPeq++; actualizarTextos() }
-        }
-        binding.btnMenosPeq.setOnClickListener {
-            if (cantPeq > 0) { cantPeq--; actualizarTextos() }
-        }
+        binding.btnMasPeq.setOnClickListener { if (cantPeq < MAX_PEQ) { cantPeq++; actualizarTextos() } }
+        binding.btnMenosPeq.setOnClickListener { if (cantPeq > 0) { cantPeq--; actualizarTextos() } }
 
-        // MALETAS MEDIANAS - Límite 40
-        binding.btnMasMed.setOnClickListener {
-            if (cantMed < MAX_MED) { cantMed++; actualizarTextos() }
-        }
-        binding.btnMenosMed.setOnClickListener {
-            if (cantMed > 0) { cantMed--; actualizarTextos() }
-        }
+        binding.btnMasMed.setOnClickListener { if (cantMed < MAX_MED) { cantMed++; actualizarTextos() } }
+        binding.btnMenosMed.setOnClickListener { if (cantMed > 0) { cantMed--; actualizarTextos() } }
 
-        // MALETAS GRANDES - Limite 30
-        binding.btnMasGde.setOnClickListener {
-            if (cantGde < MAX_GDE) { cantGde++; actualizarTextos() }
-        }
-        binding.btnMenosGde.setOnClickListener {
-            if (cantGde > 0) { cantGde--; actualizarTextos() }
-        }
+        binding.btnMasGde.setOnClickListener { if (cantGde < MAX_GDE) { cantGde++; actualizarTextos() } }
+        binding.btnMenosGde.setOnClickListener { if (cantGde > 0) { cantGde--; actualizarTextos() } }
     }
 
-    private fun getTotalMaletas(): Int {
-        return cantPeq + cantMed + cantGde
-    }
+    private fun getTotalMaletas(): Int = cantPeq + cantMed + cantGde
 
     private fun actualizarTextos() {
         binding.tvCantPeq.text = cantPeq.toString()
         binding.tvCantMed.text = cantMed.toString()
         binding.tvCantGde.text = cantGde.toString()
 
-        // Desactivamos el botón "+" individualmente si llegan a su límite físico
         binding.btnMasPeq.isEnabled = cantPeq < MAX_PEQ
         binding.btnMasMed.isEnabled = cantMed < MAX_MED
         binding.btnMasGde.isEnabled = cantGde < MAX_GDE
     }
 
-    // CALENDARIOS Y RELOJ
+    // ==========================================
+    // CALENDARIOS
+    // ==========================================
     private fun calendarios() {
         binding.etFechaEntrada.setOnClickListener { mostrarSelectorFechaYHora(true) }
         binding.etFechaSalida.setOnClickListener { mostrarSelectorFechaYHora(false) }
     }
 
     private fun mostrarSelectorFechaYHora(esEntrada: Boolean) {
-        val calendarioActual = Calendar.getInstance()
-
+        val cal = Calendar.getInstance()
         DatePickerDialog(requireContext(), { _, anio, mes, dia ->
             TimePickerDialog(requireContext(), { _, hora, minuto ->
-
-                val fechaSeleccionada = Calendar.getInstance()
-                fechaSeleccionada.set(anio, mes, dia, hora, minuto)
-
+                val fechaSel = Calendar.getInstance()
+                fechaSel.set(anio, mes, dia, hora, minuto)
                 val formato = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
                 if (esEntrada) {
-                    fechaEntrada = fechaSeleccionada
-                    binding.etFechaEntrada.setText(formato.format(fechaSeleccionada.time))
+                    fechaEntrada = fechaSel
+                    binding.etFechaEntrada.setText(formato.format(fechaSel.time))
                 } else {
-                    // VALIDACIÓN EXTRA: Que la salida no sea antes de la entrada
-                    if (fechaEntrada != null && fechaSeleccionada.before(fechaEntrada)) {
+                    if (fechaEntrada != null && fechaSel.before(fechaEntrada)) {
                         Toast.makeText(requireContext(), "La salida no puede ser antes de la entrada", Toast.LENGTH_SHORT).show()
                         return@TimePickerDialog
                     }
-                    fechaSalida = fechaSeleccionada
-                    binding.etFechaSalida.setText(formato.format(fechaSeleccionada.time))
+                    fechaSalida = fechaSel
+                    binding.etFechaSalida.setText(formato.format(fechaSel.time))
                 }
-
-            }, calendarioActual.get(Calendar.HOUR_OF_DAY), calendarioActual.get(Calendar.MINUTE), true).show()
-
-        }, calendarioActual.get(Calendar.YEAR), calendarioActual.get(Calendar.MONTH), calendarioActual.get(Calendar.DAY_OF_MONTH)).show()
+            }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
     }
 
+    // ==========================================
+    // CÁLCULO DE PRECIO
+    // ==========================================
+    private fun calcularPrecioTotal(): Double {
+        if (fechaEntrada == null || fechaSalida == null) return 0.0
 
-    // LÓGICA DE BOTONES PRINCIPALES
+        // Calculamos los días (mínimo 1 día de cobro)
+        val diffMilisegundos = fechaSalida!!.timeInMillis - fechaEntrada!!.timeInMillis
+        var dias = (diffMilisegundos / (1000 * 60 * 60 * 24)).toInt()
+        if (dias == 0) dias = 1
+
+        // Precios base: Peq: 3.0€, Med: 4.5€, Gde: 5.5€
+        return ((cantPeq * 3.0) + (cantMed * 4.5) + (cantGde * 5.5)) * dias
+    }
+
+    // ==========================================
+    // BOTONES PRINCIPALES (Conexión a Firebase)
+    // ==========================================
     private fun botonesPrincipales() {
 
         binding.btnCancelar.setOnClickListener {
@@ -135,39 +138,74 @@ class ReservarFragment : Fragment() {
         }
 
         binding.btnComprobar.setOnClickListener {
-            // Mínimo 1 maleta
             if (getTotalMaletas() == 0) {
-                Toast.makeText(requireContext(), "Añade al menos 1 maleta para reservar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Añade al menos 1 maleta", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Fechas completas
             if (fechaEntrada == null || fechaSalida == null) {
-                Toast.makeText(requireContext(), "Por favor, selecciona las fechas de entrada y salida", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Selecciona las fechas", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Muestra la barra de carga
             binding.btnComprobar.visibility = View.GONE
             binding.progressBarReserva.visibility = View.VISIBLE
 
-            // TODO: AQUÍ HAREMOS LA CONSULTA A FIREBASE EN EL SIGUIENTE PASO
-            // De momento simulamos la espera de 1.5 segundos
-            Handler(Looper.getMainLooper()).postDelayed({
+            // USAMOS CORRUTINAS PARA HABLAR CON EL REPOSITORIO
+            lifecycleScope.launch {
+                val hayHueco = reservaRepository.comprobarDisponibilidad(
+                    cantPeq, cantMed, cantGde,
+                    fechaEntrada!!.timeInMillis,
+                    fechaSalida!!.timeInMillis
+                )
+
                 binding.progressBarReserva.visibility = View.GONE
-                binding.btnConfirmar.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), "¡Disponibilidad confirmada!", Toast.LENGTH_SHORT).show()
-            }, 1500)
+
+                if (hayHueco) {
+                    binding.btnConfirmar.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(), "¡Taquillas disponibles!", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.btnComprobar.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(), "Lo sentimos, no hay taquillas suficientes para esas fechas", Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
         binding.btnConfirmar.setOnClickListener {
-            val pinAcceso = (100000..999999).random().toString()
-            Toast.makeText(requireContext(), "¡Reserva confirmada! Tu PIN es: $pinAcceso", Toast.LENGTH_LONG).show()
+            // Desactivamos el botón para evitar doble clic accidental
+            binding.btnConfirmar.isEnabled = false
 
-            // TODO: GUARDAR LA RESERVA EN FIREBASE
+            // 1. Preparamos todos los datos
+            val pinGenerado = (100000..999999).random().toString()
+            val usuarioId = auth.currentUser?.uid ?: "usuario_anonimo"
+            val precio = calcularPrecioTotal()
 
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, MisReservasFragment())
-                .commit()
+            val nuevaReserva = Reserva(
+                idUsuario = usuarioId,
+                cantPeq = cantPeq,
+                cantMed = cantMed,
+                cantGde = cantGde,
+                fechaInicio = fechaEntrada!!.timeInMillis,
+                fechaFin = fechaSalida!!.timeInMillis,
+                pinAcceso = pinGenerado,
+                precioTotal = precio
+            )
+
+            // 2. Guardamos en Firebase usando nuestro Repositorio
+            lifecycleScope.launch {
+                val idGenerado = reservaRepository.guardarReserva(nuevaReserva)
+
+                if (idGenerado != null) {
+                    Toast.makeText(requireContext(), "¡Reserva completada!", Toast.LENGTH_LONG).show()
+
+                    // Viajamos a la pantalla de Mis Reservas
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, MisReservasFragment())
+                        .commit()
+                } else {
+                    binding.btnConfirmar.isEnabled = true
+                    Toast.makeText(requireContext(), "Error al guardar la reserva", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

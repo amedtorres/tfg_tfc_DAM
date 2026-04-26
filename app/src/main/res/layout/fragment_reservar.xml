@@ -103,7 +103,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tvPrecioPeq"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -210,7 +210,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tvPrecioReg"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -317,7 +317,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tvPrecioIrr"
-                            android:textColor="?attr/colorPrimary"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -412,18 +412,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnSecondary"
                 android:text="@string/btnComprobar"
                 app:cornerRadius="12dp" />
-
-            <Button
-                android:id="@+id/btnCancelar"
-                android:backgroundTint="?attr/colorSurface"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/btnCancelarReserva"
-                android:textColor="?attr/colorError" />
-
             <Button
                 android:id="@+id/btnConfirmar"
                 android:layout_width="match_parent"
@@ -433,6 +425,14 @@
                 android:backgroundTint="?attr/colorTertiary"
                 android:visibility="gone"
                 app:cornerRadius="12dp" />
+            <Button
+                android:id="@+id/btnCancelar"
+                android:backgroundTint="?attr/colorSurface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/btnCancelarReserva"
+                android:textColor="?attr/colorError" />
 
         </LinearLayout>
     </ScrollView>
