@@ -1,4 +1,74 @@
 package com.amedtorres.bagdrop.ui.adapters
 
-class ReservasAdapter {
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.amedtorres.bagdrop.R
+import com.amedtorres.bagdrop.model.Reserva
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+class ReservasAdapter(
+    private var listaReservas: List<Reserva>,
+    private val onCancelarClick: (Reserva) -> Unit // Función que avisa al Fragment al pulsar Cancelar
+) : RecyclerView.Adapter<ReservasAdapter.ReservaViewHolder>() {
+
+    //  Vinculamos los elementos del XML (item_reserva.xml)
+    class ReservaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvEstado: TextView = itemView.findViewById(R.id.tvEstado)
+        val tvPrecio: TextView = itemView.findViewById(R.id.tvPrecio)
+        val tvFechas: TextView = itemView.findViewById(R.id.tvFechas)
+        val tvDetalleMaletas: TextView = itemView.findViewById(R.id.tvDetalleMaletas)
+        val tvPinValor: TextView = itemView.findViewById(R.id.tvPinValor)
+        val btnCancelar: Button = itemView.findViewById(R.id.btnCancelarReservaItem)
+    }
+
+    //  diseño (XML) debe usar para cada tarjeta
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservaViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reserva, parent, false)
+        return ReservaViewHolder(view)
+    }
+
+    //  Rellenamos los datos de la reserva en los Textos de la tarjeta
+    override fun onBindViewHolder(holder: ReservaViewHolder, position: Int) {
+        val reserva = listaReservas[position]
+
+        // Estado
+        holder.tvEstado.text = reserva.estado
+
+        // Precio Formateado con 2 decimales y el smbolo de Euro
+        holder.tvPrecio.text = String.format(Locale.getDefault(), "%.2f €", reserva.precioTotal)
+
+        // Fechas (Convertimos los milisegundos de Firebase a un texto bonito como "28/04 10:00")
+        val formatoFecha = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
+        val fechaInicioTxt = formatoFecha.format(reserva.fechaInicio)
+        val fechaFinTxt = formatoFecha.format(reserva.fechaFin)
+        holder.tvFechas.text = "$fechaInicioTxt - $fechaFinTxt"
+
+        // Detalle de las maletas reservadas
+        holder.tvDetalleMaletas.text = "${reserva.cantPeq} Peq | ${reserva.cantMed} Med | ${reserva.cantGde} Gde"
+
+        // PIN de acceso
+        holder.tvPinValor.text = reserva.pinAcceso
+
+        // Clic en el botón Cancelar
+        holder.btnCancelar.setOnClickListener {
+            onCancelarClick(reserva)
+        }
+    }
+
+    //  Le decimos cuántas reservas hay en total
+    override fun getItemCount(): Int {
+        return listaReservas.size
+    }
+
+    // 5 Función para actualizar la lista en tiempo real cuando descargamos de Firebase
+    fun actualizarLista(nuevaLista: List<Reserva>) {
+        listaReservas = nuevaLista
+        notifyDataSetChanged() // Recarga visualmente el RecyclerView
+    }
 }

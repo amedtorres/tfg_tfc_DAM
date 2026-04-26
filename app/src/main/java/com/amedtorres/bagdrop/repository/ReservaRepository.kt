@@ -30,7 +30,7 @@ class ReservaRepository {
     ): Boolean {
         return try {
             // Buscamos solo las reservas que están ocupando sitio
-            val snapshot = coleccionReservas.whereEqualTo("estado", "Activa").get().await()
+            val snapshot = coleccionReservas.whereEqualTo("estado", "activa").get().await()
 
             var ocupadasPeq = 0
             var ocupadasMed = 0
@@ -90,6 +90,33 @@ class ReservaRepository {
         } catch (e: Exception) {
             Log.e("ReservaRepository", "Error guardando reserva: ${e.message}")
             null
+        }
+    }
+
+    //Obtiene todas las reservas Activas de un usuario concreto
+    suspend fun obtenerReservasActivasUsuario(idUsuario: String): List<Reserva> {
+        return try {
+            val snapshot = coleccionReservas
+                .whereEqualTo("idUsuario", idUsuario)
+                .whereEqualTo("estado", "activa")
+                .get().await() // Descarga los datos
+
+            // Convierte los documentos de Firebase a nuestra clase Reserva
+            snapshot.documents.mapNotNull { it.toObject(Reserva::class.java) }
+        } catch (e: Exception) {
+            Log.e("ReservaRepository", "Error descargando reservas: ${e.message}")
+            emptyList()
+        }
+    }
+
+    //Cambia el estado de una reserva a "Cancelada".
+    suspend fun cancelarReserva(idReserva: String): Boolean {
+        return try {
+            coleccionReservas.document(idReserva).update("estado", "Cancelada").await()
+            true
+        } catch (e: Exception) {
+            Log.e("ReservaRepository", "Error cancelando reserva: ${e.message}")
+            false
         }
     }
 }

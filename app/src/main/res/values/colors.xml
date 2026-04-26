@@ -2,8 +2,8 @@
 <resources>
     <color name="md_theme_primary">#000000</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
-    <color name="md_theme_primaryContainer">#0C1F1E</color>
-    <color name="md_theme_onPrimaryContainer">#748886</color>
+    <color name="md_theme_primaryContainer">#E8F5E9</color>
+    <color name="md_theme_onPrimaryContainer">#0C1F1E</color>
     <color name="md_theme_secondary">#131414</color>
     <color name="md_theme_onSecondary">#FFFFFF</color>
     <color name="md_theme_secondaryContainer">#DAE1E0</color>
@@ -30,8 +30,7 @@
     <color name="md_theme_outlineVariant">#C2C8C6</color>
 
 
-    <color name="md_theme_scrim">#000000</color>
-    <color name="md_theme_inverseSurface">#303030</color>
+    <color name="md_theme_inverseSurface">#2196F3</color>
     <color name="md_theme_inverseOnSurface">#F2F0EF</color>
     <color name="md_theme_inversePrimary">#B6CBC8</color>
     <color name="md_theme_primaryFixed">#D2E7E4</color>

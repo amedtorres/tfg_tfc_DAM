@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:colorBackground"
-    android:padding="20dp"
+    android:padding="24dp"
     tools:context=".ui.fragmentReservar.ReservarFragment">
 
     <TextView
@@ -17,7 +17,7 @@
         android:textAlignment="center"
         android:text="@string/tvTituloReserva"
         android:textColor="?attr/colorOnBackground"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

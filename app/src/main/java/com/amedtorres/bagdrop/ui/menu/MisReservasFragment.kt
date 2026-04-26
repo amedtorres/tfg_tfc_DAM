@@ -1,60 +1,116 @@
 package com.amedtorres.bagdrop.ui.menu
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.amedtorres.bagdrop.R
+import com.amedtorres.bagdrop.databinding.FragmentMisReservasBinding
+import com.amedtorres.bagdrop.repository.ReservaRepository
+import com.amedtorres.bagdrop.ui.adapters.ReservasAdapter
+import com.amedtorres.bagdrop.ui.fragmentReservar.ReservarFragment
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MisReservasFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MisReservasFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentMisReservasBinding? = null
+    private val binding get() = _binding!!
+
+    private val reservaRepository = ReservaRepository()
+    private val auth = FirebaseAuth.getInstance()
+    private lateinit var reservasAdapter: ReservasAdapter
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentMisReservasBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        configurarNavegacion()
+        configurarRecyclerView()
+        cargarReservas()
+    }
+
+    private fun configurarNavegacion() {
+        // Al pulsar "Nueva Reserva", viajamos al fragmento de reservas
+        binding.btnNuevaReserva.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, ReservarFragment())
+                .addToBackStack(null) // Permite volver atrás
+                .commit()
+        }
+
+        // TODO: En el futuro configuraremos el botón de Historial
+    }
+
+    private fun configurarRecyclerView() {
+        // Inicializamos el Adapter vacío al principio
+        reservasAdapter = ReservasAdapter(emptyList()) { reservaCancelada ->
+            // ¿Qué pasa si el usuario pulsa en Cancelar dentro de una tarjeta?
+            cancelarReserva(reservaCancelada.idReserva)
+        }
+
+        // Le decimos al RecyclerView cómo debe colocar las cosas (lista vertical)
+        binding.rvReservas.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvReservas.adapter = reservasAdapter
+    }
+
+    private fun cargarReservas() {
+        val idUsuario = auth.currentUser?.uid ?: "usuario_anonimo"
+
+        // Mostramos la ruleta y ocultamos textos
+        binding.progressBarLista.visibility = View.VISIBLE
+        binding.tvListaVacia.visibility = View.GONE
+        binding.rvReservas.visibility = View.GONE
+
+        // Vamos a Firebase a por los datos
+        lifecycleScope.launch {
+            val lista = reservaRepository.obtenerReservasActivasUsuario(idUsuario)
+
+            binding.progressBarLista.visibility = View.GONE
+
+            if (lista.isEmpty()) {
+                // Si no tiene reservas, mostramos el mensaje de lista vacía
+                binding.tvListaVacia.visibility = View.VISIBLE
+            } else {
+                // Si tiene, las mandamos al adaptador para que las pinte
+                binding.rvReservas.visibility = View.VISIBLE
+
+                // Ordenamos por fecha de inicio para que la más próxima salga arriba
+                val listaOrdenada = lista.sortedBy { it.fechaInicio }
+                reservasAdapter.actualizarLista(listaOrdenada)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mis_reservas, container, false)
+    private fun cancelarReserva(idReserva: String) {
+        // Volvemos a mostrar la ruleta de carga
+        binding.progressBarLista.visibility = View.VISIBLE
+        binding.rvReservas.visibility = View.GONE
+
+        lifecycleScope.launch {
+            val exito = reservaRepository.cancelarReserva(idReserva)
+            if (exito) {
+                Toast.makeText(requireContext(), "Reserva cancelada correctamente", Toast.LENGTH_SHORT).show()
+                // Recargamos la lista para que la tarjeta desaparezca
+                cargarReservas()
+            } else {
+                binding.progressBarLista.visibility = View.GONE
+                binding.rvReservas.visibility = View.VISIBLE
+                Toast.makeText(requireContext(), "Error al cancelar la reserva", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MisReservasFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MisReservasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

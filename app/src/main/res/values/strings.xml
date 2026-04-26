@@ -67,6 +67,22 @@
 
 
 
+    <!-- ****** CardView Reservas ********* -->
+    <string name="cardEstado">Activa</string>
+    <string name="pinReserva">PIN de Taquilla</string>
+    <string name="cardCancelareserva">Cancelar"</string>
+
+
+
+
+
+    <!-- ******** PANTALLA MIS RESERVAS ********-->
+    <string name="tvMisReservas">Mis Reservas</string>
+    <string name="btnNuevaReserva">Nueva Reserva</string>
+    <string name="btnHistorial">Historial"</string>
+    <string name="tvListaVacia">Aún no tienes reservas activas</string>
+    <string name="tvTituloRecordatorio">Recordatorio de Reserva</string>
+
 
 
 
