@@ -27,4 +27,48 @@
     <string name="tvSiCuenta">¿Ya tienes cuenta? Accede aquí</string>
 
 
+    <!--  ******* PANTALLA INICIO ******* -->
+    <string name="tvSaludo">Hola,...</string>
+    <string name="tvpreg">¿Qué hacemos hoy?</string>
+    <string name="tvTituloCard">Sin reservas activas"</string>
+    <string name="tvSubtituloTarjeta">Añade una reserva para guardar tu equipaje.</string>
+    <string name="btnHacerReserva">Hacer una reserva</string>
+    <string name="tvUbi">¿Dónde estamos?</string>
+
+
+    <!-- ****** PANTALLA DE RESERVAR ***********-->
+    <string name="tvTituloReserva">Nueva Reserva</string>
+    <string name="tvPeq">Pequeño</string>
+    <string name="tvReg">Mediano</string>
+    <string name="tvIrr">Grande</string>
+
+    <string name="tvPeqDescripcion">Bolsa de compras, Boslo personal</string>
+    <string name="tvRegDescripcion">Maleta, mochila, equipaje de cabina</string>
+    <string name="tvIrrDescripcion">Bicicleta, material deportivo, cochecito</string>
+
+    <string name="tvPrecioPeq">3,00 €/día</string>
+    <string name="tvPrecioReg">4,50 €/día</string>
+    <string name="tvPrecioIrr">5,50 €/día</string>
+    <string name="btnMas">+</string>
+    <string name="btnMenos">–</string>
+    <string name="tvCantidad">0</string>
+
+    <string name="btnComprobar">Comprobar Disponibilidad</string>
+    <string name="btnCancelarReserva">Cancelar"</string>
+    <string name="btnConfirmar">Confirmar Reserva</string>
+
+    <string name="tvSubtituloTarifa">Tarifa plana por día natural.</string>
+    <string name="tvFechaEntrada">Entrada (Día y Hora)</string>
+    <string name="tvFechaSalida">Salida (Día y Hora)</string>
+
+    <string name="tvFecha">Fecha</string>
+    <string name="tvHora">Hora</string>
+
+
+
+
+
+
+
+
 </resources>
