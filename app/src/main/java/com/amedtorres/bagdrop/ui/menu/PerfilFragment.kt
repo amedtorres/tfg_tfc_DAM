@@ -101,9 +101,8 @@ class PerfilFragment : Fragment() {
 
         // --- CERRAR SESIÓN ---
         binding.btnCerrarSesion.setOnClickListener {
-            // Deslogueamos de Firebase
             auth.signOut()
-
+            Toast.makeText(requireContext(), "¡Hasta pronto! Sesión cerrada.", Toast.LENGTH_SHORT).show()
             // Viajamos a la pantalla de Login y borramos el historial para que no pueda volver atrás
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

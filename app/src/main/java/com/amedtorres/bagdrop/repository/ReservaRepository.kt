@@ -120,8 +120,19 @@ class ReservaRepository {
         }
     }
 
-    // Obtiene el historial de reservas (Canceladas o Completadas) de un usuario.
+    //Cambia el estado de una reserva a "Completada" (simula que el cliente ya recogió la maleta).
 
+    suspend fun completarReserva(idReserva: String): Boolean {
+        return try {
+            coleccionReservas.document(idReserva).update("estado", "Completada").await()
+            true
+        } catch (e: Exception) {
+            Log.e("ReservaRepository", "Error completando reserva: ${e.message}")
+            false
+        }
+    }
+
+    // Guardar historial de reservas
     suspend fun obtenerHistorialUsuario(idUsuario: String): List<Reserva> {
         return try {
             val snapshot = coleccionReservas

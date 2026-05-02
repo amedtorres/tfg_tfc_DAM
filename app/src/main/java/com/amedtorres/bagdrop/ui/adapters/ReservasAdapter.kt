@@ -14,7 +14,8 @@ import java.util.Locale
 
 class ReservasAdapter(
     private var listaReservas: List<Reserva>,
-    private val onCancelarClick: (Reserva) -> Unit // Función que avisa al Fragment al pulsar Cancelar
+    private val onCancelarClick: (Reserva) -> Unit, // Función que avisa al Fragment al pulsar Cancelar
+    private val onCompletarClick: (Reserva) -> Unit // Función que avisa al Fragment al pulsar Completar
 ) : RecyclerView.Adapter<ReservasAdapter.ReservaViewHolder>() {
 
     //  Vinculamos los elementos del XML (item_reserva.xml)
@@ -25,6 +26,7 @@ class ReservasAdapter(
         val tvDetalleMaletas: TextView = itemView.findViewById(R.id.tvDetalleMaletas)
         val tvPinValor: TextView = itemView.findViewById(R.id.tvPinValor)
         val btnCancelar: Button = itemView.findViewById(R.id.btnCancelarReservaItem)
+        val btnCompletar: Button = itemView.findViewById(R.id.btnCompletarReservaItem)
     }
 
     //  diseño (XML) debe usar para cada tarjeta
@@ -55,9 +57,23 @@ class ReservasAdapter(
         // PIN de acceso
         holder.tvPinValor.text = reserva.pinAcceso
 
-        // Clic en el botón Cancelar
+        // Botón Completar
+        holder.btnCompletar.setOnClickListener {
+            onCompletarClick(reserva)
+        }
+
+        // botón Cancelar
         holder.btnCancelar.setOnClickListener {
             onCancelarClick(reserva)
+        }
+
+        // Ocultar botones si la reserva no es "activa" (para el Historial)
+        if (reserva.estado.lowercase() != "activa") {
+            holder.btnCancelar.visibility = View.GONE
+            holder.btnCompletar.visibility = View.GONE
+        } else {
+            holder.btnCancelar.visibility = View.VISIBLE
+            holder.btnCompletar.visibility = View.VISIBLE
         }
     }
 

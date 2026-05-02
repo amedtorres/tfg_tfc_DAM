@@ -57,11 +57,15 @@ class MisReservasFragment : Fragment() {
     }
 
     private fun configurarRecyclerView() {
-        // Inicializamos el Adapter vacío al principio
-        reservasAdapter = ReservasAdapter(emptyList()) { reservaCancelada ->
-            // ¿Qué pasa si el usuario pulsa en Cancelar dentro de una tarjeta?
-            cancelarReserva(reservaCancelada.idReserva)
-        }
+        reservasAdapter = ReservasAdapter(
+            listaReservas = emptyList(),
+            onCancelarClick = { reservaCancelada ->
+                cancelarReserva(reservaCancelada.idReserva)
+            },
+            onCompletarClick = { reservaCompletada ->
+                completarReserva(reservaCompletada.idReserva)
+            }
+        )
 
         // Le decimos al RecyclerView cómo debe colocar las cosas (lista vertical)
         binding.rvReservas.layoutManager = LinearLayoutManager(requireContext())
@@ -111,6 +115,23 @@ class MisReservasFragment : Fragment() {
                 binding.progressBarLista.visibility = View.GONE
                 binding.rvReservas.visibility = View.VISIBLE
                 Toast.makeText(requireContext(), "Error al cancelar la reserva", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun completarReserva(idReserva: String) {
+        binding.progressBarLista.visibility = View.VISIBLE
+        binding.rvReservas.visibility = View.GONE
+
+        lifecycleScope.launch {
+            val exito = reservaRepository.completarReserva(idReserva) // Asegúrate de haber creado esta función en tu ReservaRepository
+            if (exito) {
+                Toast.makeText(requireContext(), "¡Maleta recogida! Reserva completada", Toast.LENGTH_SHORT).show()
+                cargarReservas()
+            } else {
+                binding.progressBarLista.visibility = View.GONE
+                binding.rvReservas.visibility = View.VISIBLE
+                Toast.makeText(requireContext(), "Error al completar la reserva", Toast.LENGTH_SHORT).show()
             }
         }
     }

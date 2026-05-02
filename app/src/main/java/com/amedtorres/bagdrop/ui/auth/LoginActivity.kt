@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.amedtorres.bagdrop.databinding.ActivityLoginBinding
 import com.amedtorres.bagdrop.repository.AuthRepository
 import com.amedtorres.bagdrop.ui.main.MainActivity
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * @author: Amed Torres
@@ -37,6 +38,19 @@ class LoginActivity : AppCompatActivity() {
         // botón "Acceder"
         binding.btnLogin.setOnClickListener {
             iniciarSesion()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Comprobamos si Firebase ya tiene un usuario guardado
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            // Nos saltamos el Login y lo mandamos directo a la app
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish() // Cerramos esta pantalla de Login para que no se quede de fondo
         }
     }
 

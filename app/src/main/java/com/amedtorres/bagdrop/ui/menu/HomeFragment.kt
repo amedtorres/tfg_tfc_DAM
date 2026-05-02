@@ -11,18 +11,24 @@ import com.amedtorres.bagdrop.R
 import com.amedtorres.bagdrop.databinding.FragmentHomeBinding
 import com.amedtorres.bagdrop.model.Reserva
 import com.amedtorres.bagdrop.repository.ReservaRepository
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import com.google.android.gms.maps.model.LatLng
 
 /**
  * @author Amed Torres
  * @version 1.0
  * @description Fragmento de Inicio - Muestra el saludo y el estado de la reserva
  */
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnMapReadyCallback {
 
     // 1. Configuración de ViewBinding
     private var _binding: FragmentHomeBinding? = null
@@ -46,7 +52,7 @@ class HomeFragment : Fragment() {
 
         // Cargamos los datos del inicio
         cargarNombreUsuario()
-        cargarProximaReserva() // Llamamos a la función mágica
+        cargarProximaReserva()
 
         binding.btnHacerReserva.setOnClickListener {
             val fragment = com.amedtorres.bagdrop.ui.fragmentReservar.ReservarFragment()
@@ -55,6 +61,12 @@ class HomeFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        // --- CONFIGURACIÓN DEL MAPA ---
+        // Buscamos el fragmento del mapa que pusimos en el XML
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapaUbicacion) as SupportMapFragment?
+        // Le decimos que nos avise cuando esté listo para usar
+        mapFragment?.getMapAsync(this)
     }
 
     /**
@@ -103,6 +115,10 @@ class HomeFragment : Fragment() {
         // oculatamos el boton cancelar
         bindingReserva.btnCancelarReservaItem.visibility = View.GONE
 
+        // oculatamos el boton completar
+        bindingReserva.btnCompletarReservaItem.visibility = View.GONE
+
+
         //titul recordarotio solo para el home
         bindingReserva.tvTituloRecordatorio.visibility = View.VISIBLE
     }
@@ -137,4 +153,35 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    /**
+     * Esta función se dispara automáticamente cuando Google Maps ha terminado de cargar.
+     */
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Coordenadas de Calle San Severo, 18, Barajas, Madrid
+        val ubicacionBagDrop = LatLng(40.462520, -3.581599)
+//        val ubicacionBagDrop = LatLng(40.462283, -3.581364)
+
+        // 1. Ponemos la chincheta (Marcador)
+        val miMarcador= googleMap.addMarker(
+            MarkerOptions()
+                .position(ubicacionBagDrop)
+                .title("Local BagDrop")
+                .snippet("C. San Severo, 18, 28042 Madrid")
+        )
+
+        // 2. Movemos la cámara hacia tu local
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBagDrop, 16f))
+
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBagDrop, 16f), 2000, null)
+
+        // 3. ¡LA MAGIA! Forzamos a que el cartelito se abra solo sin que el usuario toque nada
+        miMarcador?.showInfoWindow()
+
+        // 2. Movemos la cámara allí y le damos un zoom bonito (el 15f o 16f suele quedar genial para ver la calle)
+        googleMap.uiSettings.isZoomControlsEnabled = true
+        googleMap.uiSettings.isMapToolbarEnabled = true
+    }
+
+
 }

@@ -43,9 +43,10 @@ class HistorialFragment : Fragment() {
 
     private fun configurarRecyclerView() {
         // Reutilizamos el Adapter, pero si están en el historial no deberían poder cancelar.
-        historialAdapter = ReservasAdapter(emptyList()) { _ ->
-            // No hacemos nada al clickar "Cancelar" aquí
-        }
+        historialAdapter = ReservasAdapter(emptyList(),
+            onCancelarClick = { },
+            onCompletarClick = { }
+        )
         binding.rvHistorial.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHistorial.adapter = historialAdapter
     }

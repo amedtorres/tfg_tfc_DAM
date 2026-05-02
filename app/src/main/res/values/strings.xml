@@ -68,7 +68,8 @@
     <!-- ****** CardView Reservas ********* -->
     <string name="cardEstado">Activa</string>
     <string name="pinReserva">PIN de Taquilla</string>
-    <string name="cardCancelareserva">Cancelar"</string>
+    <string name="btndCancelarReserva">Cancelar"</string>
+    <string name="btnCompletarReserva">Completado"</string>
     <string name="tvTituloRecordatorio">Recordatorio de Reserva</string>
 
 

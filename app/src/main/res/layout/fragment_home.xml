@@ -126,27 +126,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnHacerReserva" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mapPlaceholder"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapaUbicacion"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDondeEstamos">
+        app:layout_constraintTop_toBottomOf="@+id/tvDondeEstamos"
+        tools:layout="@layout/item_reserva"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="El Mapa de Google irá aquí"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textStyle="bold" />
-    </com.google.android.material.card.MaterialCardView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
