@@ -39,7 +39,7 @@ class MisReservasFragment : Fragment() {
     }
 
     private fun configurarNavegacion() {
-        // Al pulsar "Nueva Reserva", viajamos al fragmento de reservas
+        // Nueva Reserva
         binding.btnNuevaReserva.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, ReservarFragment())
@@ -47,7 +47,13 @@ class MisReservasFragment : Fragment() {
                 .commit()
         }
 
-        // TODO: En el futuro configuraremos el botón de Historial
+        // HistorialFragment
+        binding.btnHistorial.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, HistorialFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun configurarRecyclerView() {

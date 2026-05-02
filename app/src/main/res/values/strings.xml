@@ -65,15 +65,11 @@
     <string name="tvHora">Hora</string>
 
 
-
-
     <!-- ****** CardView Reservas ********* -->
     <string name="cardEstado">Activa</string>
     <string name="pinReserva">PIN de Taquilla</string>
     <string name="cardCancelareserva">Cancelar"</string>
-
-
-
+    <string name="tvTituloRecordatorio">Recordatorio de Reserva</string>
 
 
     <!-- ******** PANTALLA MIS RESERVAS ********-->
@@ -81,9 +77,23 @@
     <string name="btnNuevaReserva">Nueva Reserva</string>
     <string name="btnHistorial">Historial"</string>
     <string name="tvListaVacia">Aún no tienes reservas activas</string>
-    <string name="tvTituloRecordatorio">Recordatorio de Reserva</string>
 
 
+    <!-- ******** PANTALLA HISTORIAL ********-->
+    <string name="tvTituloHistorial">Historial de Reservas</string>
+    <string name="tvListaVaciaHistorial">Aún no tienes reservas en el historial</string>
+    <string name="btnVolver">Volver</string>
+
+
+
+    <!-- ******** PANTALLA PERFIL ********-->
+    <string name="tvPerfil">Perfil</string>
+    <string name="tvMiCuenta">MI CUENTA</string>
+    <string name="tvID">ID del Usuario</string>
+    <string name="tvCorreo">Correo</string>
+    <string name="tvTelefono">Teléfono</string>
+    <string name="tvCambiarContrasena">Cambiar Contraseña</string>
+    <string name="btnCerrarSesion">Cerrar Sesión</string>
 
 
 

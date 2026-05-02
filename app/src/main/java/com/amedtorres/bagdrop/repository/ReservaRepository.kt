@@ -119,4 +119,20 @@ class ReservaRepository {
             false
         }
     }
+
+    // Obtiene el historial de reservas (Canceladas o Completadas) de un usuario.
+
+    suspend fun obtenerHistorialUsuario(idUsuario: String): List<Reserva> {
+        return try {
+            val snapshot = coleccionReservas
+                .whereEqualTo("idUsuario", idUsuario)
+                .whereIn("estado", listOf("Cancelada", "Completada")) // Busca cualquiera de estos dos estados
+                .get().await()
+
+            snapshot.documents.mapNotNull { it.toObject(Reserva::class.java) }
+        } catch (e: Exception) {
+            Log.e("ReservaRepository", "Error descargando historial: ${e.message}")
+            emptyList()
+        }
+    }
 }
