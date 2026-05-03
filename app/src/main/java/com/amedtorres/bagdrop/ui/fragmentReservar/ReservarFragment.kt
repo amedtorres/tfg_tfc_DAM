@@ -197,6 +197,35 @@ class ReservarFragment : Fragment() {
                 if (idGenerado != null) {
                     Toast.makeText(requireContext(), "¡Reserva completada!", Toast.LENGTH_LONG).show()
 
+// Calculamos 30 minutos antes de la fecha de entrada (en milisegundos)
+                    val treintaMinMilisegundos = 30 * 60 * 1000L
+                    val horaAlarma = fechaEntrada!!.timeInMillis - treintaMinMilisegundos
+
+                    // Comprobamos si esos "30 minutos antes" no han pasado ya.
+                    // (Si el usuario reserva ahora mismo para dentro de 10 min, no ponemos la alarma)
+                    if (horaAlarma > System.currentTimeMillis()) {
+
+                        val intent = android.content.Intent(requireContext(), com.amedtorres.bagdrop.utils.AlarmaReceiver::class.java)
+
+                        // NOTA: Usamos FLAG_IMMUTABLE por seguridad desde Android 12
+                        val pendingIntent = android.app.PendingIntent.getBroadcast(
+                            requireContext(),
+                            idGenerado.hashCode(), // Usamos un ID único por reserva para que no se pisen
+                            intent,
+                            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+                        )
+
+                        val alarmManager = requireContext().getSystemService(android.content.Context.ALARM_SERVICE) as android.app.AlarmManager
+
+                        // Programamos la alarma exacta para que despierte a tu AlarmaReceiver
+                        try {
+                            alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, horaAlarma, pendingIntent)
+                        } catch (e: SecurityException) {
+                            // En Android 14+ el usuario puede denegar manualmente las alarmas exactas en ajustes.
+                            android.util.Log.e("BagDrop", "Error de permisos al programar alarma: ", e)
+                        }
+                    }
+
                     // Viajamos a la pantalla de Mis Reservas
                     requireActivity().supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, MisReservasFragment())

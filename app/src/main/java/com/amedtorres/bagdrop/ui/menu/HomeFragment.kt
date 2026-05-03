@@ -173,7 +173,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         // 2. Movemos la cámara hacia tu local
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBagDrop, 16f))
 
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionBagDrop, 16f), 2000, null)
 
         // 3. ¡LA MAGIA! Forzamos a que el cartelito se abra solo sin que el usuario toque nada
         miMarcador?.showInfoWindow()

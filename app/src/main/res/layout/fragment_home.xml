@@ -5,142 +5,139 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:colorBackground"
-    android:padding="24dp"
     tools:context=".ui.menu.HomeFragment">
 
-    <TextView
-        android:id="@+id/tvSaludo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/tvSaludo"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:textColor="?attr/colorOnBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvSubtitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/tvpreg"
-        android:textSize="16sp"
-        android:textColor="?attr/colorOutline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSaludo" />
-
-    <FrameLayout
-        android:id="@+id/contenedorReservaProxima"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSubtitulo">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/layoutSinReserva"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            android:visibility="visible">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp">
-
-                <ImageView
-                    android:id="@+id/ivIconoTarjeta"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/logobd"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvTituloTarjeta"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/tvTituloCard"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivIconoTarjeta"
-                    app:layout_constraintTop_toTopOf="@+id/ivIconoTarjeta" />
-
-                <TextView
-                    android:id="@+id/tvDescTarjeta"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/tvSubtituloTarjeta"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivIconoTarjeta"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTituloTarjeta" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <include
-            android:id="@+id/layoutConReserva"
-            layout="@layout/item_reserva"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/btnHacerReserva"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/btnHacerReserva"
-        android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnSecondary"
-        app:cornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contenedorReservaProxima" />
-
-    <TextView
-        android:id="@+id/tvDondeEstamos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/tvUbi"
-        android:textColor="?attr/colorOnBackground"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHacerReserva" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/mapaUbicacion"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <!-- ScrollView dentro del ConstraintLayout -->
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:clipToPadding="false"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDondeEstamos"
-        tools:layout="@layout/item_reserva"
-        />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <!-- LinearLayout para agrupar todo el contenido del ScrollView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tvSaludo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/tvSaludo"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tvSubtitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/tvpreg"
+                android:textColor="?attr/colorOutline"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:id="@+id/contenedorReservaProxima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layoutSinReserva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivIconoTarjeta"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/logobd"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvTituloTarjeta"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/tvTituloCard"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/ivIconoTarjeta"
+                            app:layout_constraintTop_toTopOf="@+id/ivIconoTarjeta" />
+
+                        <TextView
+                            android:id="@+id/tvDescTarjeta"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/tvSubtituloTarjeta"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/ivIconoTarjeta"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTituloTarjeta" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <include
+                    android:id="@+id/layoutConReserva"
+                    layout="@layout/item_reserva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnHacerReserva"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:text="@string/btnHacerReserva"
+                android:textColor="?attr/colorOnSecondary"
+                app:cornerRadius="12dp" />
+
+            <TextView
+                android:id="@+id/tvDondeEstamos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/tvUbi"
+                android:gravity="center"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/mapaUbicacion"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                tools:layout="@layout/item_reserva" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
