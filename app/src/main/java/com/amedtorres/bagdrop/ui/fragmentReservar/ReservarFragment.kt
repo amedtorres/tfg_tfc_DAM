@@ -99,6 +99,12 @@ class ReservarFragment : Fragment() {
                 val formato = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
                 if (esEntrada) {
+                    val momentoActual = Calendar.getInstance()
+                    if (fechaSel.before(momentoActual)){
+                        Toast.makeText(requireContext(), "No puedes seleccionar una fecha u hora que ya ha pasado", Toast.LENGTH_SHORT).show()
+                        return@TimePickerDialog// Cortamos la ejecución, no se guarda nada
+                    }
+                    // Si todo es correcto, guardamos y mostramos
                     fechaEntrada = fechaSel
                     binding.etFechaEntrada.setText(formato.format(fechaSel.time))
                 } else {
