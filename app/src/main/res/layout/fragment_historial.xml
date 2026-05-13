@@ -70,7 +70,7 @@
         android:layout_height="60dp"
         android:text="@string/btnVolver"
         android:backgroundTint="?attr/colorPrimary"
-        android:textColor="?attr/colorOnPrimary"
+        android:textColor="?attr/colorOnSecondary"
         app:cornerRadius="12dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
