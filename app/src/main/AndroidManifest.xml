@@ -33,7 +33,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCUx2U3N1PpYDWcwmAad6ULsMCHCJbPxms" />
+            android:value="METER-API-kEY-AQUI" />
 
         <receiver android:name=".utils.AlarmaReceiver" />
     </application>
