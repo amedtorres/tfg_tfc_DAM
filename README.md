@@ -14,7 +14,7 @@ Este proyecto ha sido desarrollado como **Trabajo de Fin de Ciclo (TFC)** para e
 
 ##  Vistazo a la Aplicación (Wireframes y Diseño)
 
-![Wireframes y Capturas de Pantalla de BagDrop](assets/wireframes.png)
+![Wireframes y Capturas de Pantalla de BagDrop](appBagDrop.png)
 
 ---
 
@@ -45,4 +45,29 @@ Si deseas compilar o auditar el código fuente en tu propio entorno de desarroll
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/amedtorres/BagDrop.git](https://github.com/amedtorres/BagDrop.git)
+   git clone https://github.com/amedtorres/tfg_tfc_DAM.git
+
+2. **Abrir en Android Studio (Versión Iguana o superior recomendada)**
+
+3. **Configuración de Firebase:** Debes conectar tu propio proyecto de Firebase y añadir el archivo google-services.json en el directorio app/ del proyecto.
+
+4. **Configuración de Google Maps:**
+Por motivos de seguridad, la API Key ha sido retirada. Debes añadir tu propia clave en AndroidManifest.xml:
+```bash
+XML
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="TU_API_KEY_AQUI" /> 
+```
+5. **Sincronizar Gradle y compilar (Run).**
+
+---
+
+## Autor
+Amed Torres | Desarrollador de Aplicaciones Multiplataforma (DAM) 💻
+
+---
+
+# Licencia
+Este proyecto se distribuye bajo la **Licencia MIT**. Siéntete libre de utilizar el código, siempre y cuando se reconozca la autoría original.
+
