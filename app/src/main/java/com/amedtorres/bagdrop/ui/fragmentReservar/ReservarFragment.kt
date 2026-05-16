@@ -24,22 +24,20 @@ class ReservarFragment : Fragment() {
 
     private var _binding: FragmentReservarBinding? = null
     private val binding get() = _binding!!
-
-    // 1. Instanciamos nuestro Repositorio y FirebaseAuth
     private val reservaRepository = ReservaRepository()
     private val auth = FirebaseAuth.getInstance()
 
-    // Contadores actuales para las cantidades
+    // Contadores  para las cantidades
     private var cantPeq = 0
     private var cantMed = 0
     private var cantGde = 0
 
-    // Límites máximos para cada tipo de maleta
+    // Limites máximos para cada tipo de maleta
     private val MAX_PEQ = 30
     private val MAX_MED = 40
     private val MAX_GDE = 30
 
-    // Variables para guardar las fechas
+    // variables para guardar las fechas
     private var fechaEntrada: Calendar? = null
     private var fechaSalida: Calendar? = null
 
@@ -55,10 +53,6 @@ class ReservarFragment : Fragment() {
         calendarios()
         botonesPrincipales()
     }
-
-    // ==========================================
-    // CONTADORES
-    // ==========================================
     private fun botonesContadores() {
         binding.btnMasPeq.setOnClickListener { if (cantPeq < MAX_PEQ) { cantPeq++; actualizarTextos() } }
         binding.btnMenosPeq.setOnClickListener { if (cantPeq > 0) { cantPeq--; actualizarTextos() } }
@@ -82,9 +76,6 @@ class ReservarFragment : Fragment() {
         binding.btnMasGde.isEnabled = cantGde < MAX_GDE
     }
 
-    // ==========================================
-    // CALENDARIOS
-    // ==========================================
     private fun calendarios() {
         binding.etFechaEntrada.setOnClickListener { mostrarSelectorFechaYHora(true) }
         binding.etFechaSalida.setOnClickListener { mostrarSelectorFechaYHora(false) }
@@ -104,7 +95,7 @@ class ReservarFragment : Fragment() {
                         Toast.makeText(requireContext(), "No puedes seleccionar una fecha u hora que ya ha pasado", Toast.LENGTH_SHORT).show()
                         return@TimePickerDialog// Cortamos la ejecución, no se guarda nada
                     }
-                    // Si todo es correcto, guardamos y mostramos
+                    // si todo es correcto, guardamos y mostramos
                     fechaEntrada = fechaSel
                     binding.etFechaEntrada.setText(formato.format(fechaSel.time))
                 } else {
@@ -119,26 +110,19 @@ class ReservarFragment : Fragment() {
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
     }
 
-    // ==========================================
-    // CÁLCULO DE PRECIO
-    // ==========================================
+    // calculo del precio
     private fun calcularPrecioTotal(): Double {
         if (fechaEntrada == null || fechaSalida == null) return 0.0
 
-        // Calculamos los días (mínimo 1 día de cobro)
+        // Calculamos los días
         val diffMilisegundos = fechaSalida!!.timeInMillis - fechaEntrada!!.timeInMillis
         var dias = (diffMilisegundos / (1000 * 60 * 60 * 24)).toInt()
         if (dias == 0) dias = 1
-
-        // Precios base: Peq: 3.0€, Med: 4.5€, Gde: 5.5€
         return ((cantPeq * 3.0) + (cantMed * 4.5) + (cantGde * 5.5)) * dias
     }
 
-    // ==========================================
-    // BOTONES PRINCIPALES (Conexión a Firebase)
-    // ==========================================
+    //botones principales de reserva
     private fun botonesPrincipales() {
-
         binding.btnCancelar.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -156,7 +140,7 @@ class ReservarFragment : Fragment() {
             binding.btnComprobar.visibility = View.GONE
             binding.progressBarReserva.visibility = View.VISIBLE
 
-            // USAMOS CORRUTINAS PARA HABLAR CON EL REPOSITORIO
+            // CORRUTINAS PARA HABLAR CON EL REPOSITORIO
             lifecycleScope.launch {
                 val hayHueco = reservaRepository.comprobarDisponibilidad(
                     cantPeq, cantMed, cantGde,
@@ -177,10 +161,8 @@ class ReservarFragment : Fragment() {
         }
 
         binding.btnConfirmar.setOnClickListener {
-            // Desactivamos el botón para evitar doble clic accidental
             binding.btnConfirmar.isEnabled = false
 
-            // 1. Preparamos todos los datos
             val pinGenerado = (100000..999999).random().toString()
             val usuarioId = auth.currentUser?.uid ?: "usuario_anonimo"
             val precio = calcularPrecioTotal()
@@ -196,43 +178,33 @@ class ReservarFragment : Fragment() {
                 precioTotal = precio
             )
 
-            // 2. Guardamos en Firebase usando nuestro Repositorio
+            // Guardamos en Firebase
             lifecycleScope.launch {
                 val idGenerado = reservaRepository.guardarReserva(nuevaReserva)
 
                 if (idGenerado != null) {
                     Toast.makeText(requireContext(), "¡Reserva completada!", Toast.LENGTH_LONG).show()
-
-// Calculamos 30 minutos antes de la fecha de entrada (en milisegundos)
+                    // calculo de alarma 30 minutos antes
                     val treintaMinMilisegundos = 30 * 60 * 1000L
                     val horaAlarma = fechaEntrada!!.timeInMillis - treintaMinMilisegundos
 
-                    // Comprobamos si esos "30 minutos antes" no han pasado ya.
-                    // (Si el usuario reserva ahora mismo para dentro de 10 min, no ponemos la alarma)
                     if (horaAlarma > System.currentTimeMillis()) {
-
                         val intent = android.content.Intent(requireContext(), com.amedtorres.bagdrop.utils.AlarmaReceiver::class.java)
-
-                        // NOTA: Usamos FLAG_IMMUTABLE por seguridad desde Android 12
                         val pendingIntent = android.app.PendingIntent.getBroadcast(
                             requireContext(),
-                            idGenerado.hashCode(), // Usamos un ID único por reserva para que no se pisen
-                            intent,
-                            android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
+                            idGenerado.hashCode(),
+                            intent,android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE
                         )
 
                         val alarmManager = requireContext().getSystemService(android.content.Context.ALARM_SERVICE) as android.app.AlarmManager
-
-                        // Programamos la alarma exacta para que despierte a tu AlarmaReceiver
                         try {
                             alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, horaAlarma, pendingIntent)
                         } catch (e: SecurityException) {
-                            // En Android 14+ el usuario puede denegar manualmente las alarmas exactas en ajustes.
                             android.util.Log.e("BagDrop", "Error de permisos al programar alarma: ", e)
                         }
                     }
 
-                    // Viajamos a la pantalla de Mis Reservas
+                    // vuelta a la pantalla de Mis Reservas
                     requireActivity().supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, MisReservasFragment())
                         .commit()

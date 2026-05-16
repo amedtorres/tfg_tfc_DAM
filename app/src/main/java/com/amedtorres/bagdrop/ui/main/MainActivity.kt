@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             cambiarFragment(HomeFragment())
         }
 
-        // configuracion para la barra de navegacion
+        // navegacion del menu
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_inicio -> {

@@ -39,7 +39,6 @@ class MisReservasFragment : Fragment() {
     }
 
     private fun configurarNavegacion() {
-        // Nueva Reserva
         binding.btnNuevaReserva.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, ReservarFragment())
@@ -47,7 +46,7 @@ class MisReservasFragment : Fragment() {
                 .commit()
         }
 
-        // HistorialFragment
+        // Historial
         binding.btnHistorial.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, HistorialFragment())
@@ -67,20 +66,16 @@ class MisReservasFragment : Fragment() {
             }
         )
 
-        // Le decimos al RecyclerView cómo debe colocar las cosas (lista vertical)
         binding.rvReservas.layoutManager = LinearLayoutManager(requireContext())
         binding.rvReservas.adapter = reservasAdapter
     }
 
     private fun cargarReservas() {
         val idUsuario = auth.currentUser?.uid ?: "usuario_anonimo"
-
-        // Mostramos la ruleta y ocultamos textos
         binding.progressBarLista.visibility = View.VISIBLE
         binding.tvListaVacia.visibility = View.GONE
         binding.rvReservas.visibility = View.GONE
 
-        // Vamos a Firebase a por los datos
         lifecycleScope.launch {
             val lista = reservaRepository.obtenerReservasActivasUsuario(idUsuario)
 
@@ -93,7 +88,6 @@ class MisReservasFragment : Fragment() {
                 // Si tiene, las mandamos al adaptador para que las pinte
                 binding.rvReservas.visibility = View.VISIBLE
 
-                // Ordenamos por fecha de inicio para que la más próxima salga arriba
                 val listaOrdenada = lista.sortedBy { it.fechaInicio }
                 reservasAdapter.actualizarLista(listaOrdenada)
             }
@@ -101,7 +95,6 @@ class MisReservasFragment : Fragment() {
     }
 
     private fun cancelarReserva(idReserva: String) {
-        // Volvemos a mostrar la ruleta de carga
         binding.progressBarLista.visibility = View.VISIBLE
         binding.rvReservas.visibility = View.GONE
 
@@ -109,7 +102,6 @@ class MisReservasFragment : Fragment() {
             val exito = reservaRepository.cancelarReserva(idReserva)
             if (exito) {
                 Toast.makeText(requireContext(), "Reserva cancelada correctamente", Toast.LENGTH_SHORT).show()
-                // Recargamos la lista para que la tarjeta desaparezca
                 cargarReservas()
             } else {
                 binding.progressBarLista.visibility = View.GONE
@@ -124,7 +116,7 @@ class MisReservasFragment : Fragment() {
         binding.rvReservas.visibility = View.GONE
 
         lifecycleScope.launch {
-            val exito = reservaRepository.completarReserva(idReserva) // Asegúrate de haber creado esta función en tu ReservaRepository
+            val exito = reservaRepository.completarReserva(idReserva)
             if (exito) {
                 Toast.makeText(requireContext(), "¡Maleta recogida! Reserva completada", Toast.LENGTH_SHORT).show()
                 cargarReservas()

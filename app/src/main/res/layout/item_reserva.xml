@@ -100,7 +100,6 @@
             app:layout_constraintStart_toStartOf="@+id/tvFechas"
             app:layout_constraintTop_toBottomOf="@+id/tvFechas" />
 
-        <!-- PIN DE TAQUILLA (AHORA DEBAJO DE LAS MALETAS Y ENCIMA DEL SEPARADOR) -->
         <TextView
             android:id="@+id/tvPinLabel"
             android:layout_width="wrap_content"
@@ -126,7 +125,6 @@
             app:layout_constraintStart_toEndOf="@+id/tvPinLabel"
             app:layout_constraintTop_toTopOf="@+id/tvPinLabel" />
 
-        <!-- SEPARADOR (AHORA DEBAJO DEL PIN) -->
         <View
             android:id="@+id/separador"
             android:layout_width="match_parent"
@@ -135,7 +133,6 @@
             android:background="?attr/colorOutlineVariant"
             app:layout_constraintTop_toBottomOf="@+id/tvPinLabel" />
 
-        <!-- Botón Completar  -->
         <Button
             android:id="@+id/btnCompletarReservaItem"
             android:layout_width="118dp"
@@ -148,7 +145,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separador" />
 
-        <!-- Botón Cancelar -->
         <Button
             android:id="@+id/btnCancelarReservaItem"
             android:layout_width="118dp"

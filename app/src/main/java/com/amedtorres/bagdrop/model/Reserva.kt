@@ -1,16 +1,7 @@
 package com.amedtorres.bagdrop.model
 
 /**
- * Clase que representa una reserva.
- *@property idReserva El identificador único de la reserva.
- *@property idUsuario El identificador del usuario que realiza la reserva.
- *@property tipoMaletaId El identificador del tipo de maleta que se reserva.
- *@property fechaInicio La fecha de inicio de la reserva.
- * @property fechaFin la fecga de fin de la reserva
- * @property cantidad La cantidad de maletas reservadas
- * @property estado El estado de la reserva (activa, completada, cancelada)
- * @property pinAcceso El pin de acceso a la reserva.
- * @property precioTotal El precio total de la reserva.
+ * Clase que representa una reserva
  */
 data class Reserva(
     val idReserva: String = "",

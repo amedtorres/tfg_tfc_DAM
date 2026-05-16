@@ -12,13 +12,11 @@ import com.amedtorres.bagdrop.databinding.ActivityRegisterBinding
 import com.amedtorres.bagdrop.repository.AuthRepository
 /**
  * @author Amed Torres
- * @version 1.0
- * @description Activity de Registro -  Clase que representa la vista de Registro
  */
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
-    // Instancia del repositorio de autenticación
+    // instancia del repositorio para hablar con Firebase
     private val authRepository = AuthRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +50,7 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        //validacion de contraseña - min 6 caracteres, min 1 mayuscula y min 1 numero
+        //validacion de contraseña - min 6 caracteres, 1 mayuscula y 1 numero
         if (contrasena.length < 6 || !contrasena.any { it.isUpperCase() } || !contrasena.any { it.isDigit() }) {
             binding.tilPassword.error = "Mínimo 6 caracteres, 1 mayúscula y 1 número"
             return
@@ -67,9 +65,9 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Cuenta creada con éxito", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                finish() // ccerramos pantalla de registro
+                finish()
             } else {
-                // Si Firebase  da error, mostramos el mensaje
+                // si Firebase da error, mostramos el mensaje
                 Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
             }
         }

@@ -15,11 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class PerfilFragment : Fragment() {
-
     private var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
-
-    // Instancias directas de Firebase (igual que hicimos en el HomeFragment)
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
@@ -38,30 +35,22 @@ class PerfilFragment : Fragment() {
         configurarBotones()
     }
 
-    /**
-     * Descarga los datos del usuario desde Firebase y los pinta en los TextViews
-     */
+    // Cargamos los datos del perfil del usuario desde Firestore
     private fun cargarDatosPerfil() {
         val user = auth.currentUser
         if (user != null) {
             val uid = user.uid
-
-            // 1. Correo y ID (Desde Firebase Auth)
             binding.tvEmailValor.text = user.email ?: "Sin correo"
 
-            // Formateamos el ID para que no sea un texto larguísimo. Cogemos los 8 primeros caracteres.
+            // formateo del ID para 8 caracteres
             val idCorto = if (uid.length > 8) uid.substring(0, 8).uppercase() else uid.uppercase()
             binding.tvUsuarioIdValor.text = "#$idCorto"
 
-            // 2. Nombre y Teléfono (Desde Firestore, colección "usuarios")
             db.collection("usuarios").document(uid).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        // Nombre
                         val nombre = document.getString("nombre") ?: "Usuario BagDrop"
                         binding.tvNombrePerfil.text = nombre
-
-                        // Teléfono (Si no existe el campo en Firestore, ponemos un texto por defecto)
                         val telefonoDb = document.getString("telefono")
                         if (!telefonoDb.isNullOrEmpty()) {
                             binding.tvTelefonoValor.text = telefonoDb
@@ -78,16 +67,12 @@ class PerfilFragment : Fragment() {
         }
     }
 
-    /**
-     * Da vida a la opción de cambiar contraseña y al botón de cerrar sesión
-     */
+    // configuracion de los botones
     private fun configurarBotones() {
-
-        // --- CAMBIAR CONTRASEÑA ---
         binding.itemCambiarContrasena.setOnClickListener {
             val email = auth.currentUser?.email
             if (email != null) {
-                // Le pedimos a Firebase que envíe el correo oficial de recuperación
+                // firebase envia  el correo de restablecimiento de contraseña
                 auth.sendPasswordResetEmail(email)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -99,11 +84,11 @@ class PerfilFragment : Fragment() {
             }
         }
 
-        // --- CERRAR SESIÓN ---
+        // boton de cerrar sesion
         binding.btnCerrarSesion.setOnClickListener {
             auth.signOut()
             Toast.makeText(requireContext(), "¡Hasta pronto! Sesión cerrada.", Toast.LENGTH_SHORT).show()
-            // Viajamos a la pantalla de Login y borramos el historial para que no pueda volver atrás
+            // cierra sesiin y borramos el historial para que no pueda volver atrás
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

@@ -12,11 +12,9 @@ class AuthRepository {
 
     /**
      * @author Amed Torres
-     * @version 1.0
-     * @param onComplete: Es un "Callback". Nos avisará si ha ido bien (Boolean) y nos dará un mensaje (String).
      */
 
-    //  Función para registrar un nuevo usuario en Firebase Auth y guardar sus datos en Firestore.
+    //  Funcion para registrar usuario en Firebase Auth y guardar sus datos en Firestore
     fun registrarUsuario(
         nombre: String,
         email: String,
@@ -28,19 +26,18 @@ class AuthRepository {
         auth.createUserWithEmailAndPassword(email, contrasena)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Si el registro va bien, obtenemos el ID único que Firebase le ha dado
                     val userId = auth.currentUser?.uid ?: ""
 
-                    // 2. Creamos nuestro objeto Usuario con los datos del formulario
+                    //creamos nuestro objeto Usuario con los datos del formulario
                     val nuevoUsuario = Usuario(
                         idUsuario = userId,
                         nombre = nombre,
                         email = email,
                         telefono = telefono,
-                        fechaRegistro = System.currentTimeMillis() // Guardamos la fecha actual en milisegundos
+                        fechaRegistro = System.currentTimeMillis()
                     )
 
-                    // 3. Guardamos este objeto en la colección "usuarios" de nuestra base de datos (Firestore)
+                    // Guardamos en la colección USUARIOS
                     db.collection("usuarios").document(userId).set(nuevoUsuario)
                         .addOnSuccessListener {
                             onComplete(true, "Registro exitoso")
@@ -48,12 +45,10 @@ class AuthRepository {
                         .addOnFailureListener { exception ->
                             onComplete(false, "Error al guardar datos: ${exception.message}")
                         }
-
-                    // ... (código anterior de AuthRepository)
                 } else {
-                    // Atrapamos las excepciones específicas de Firebase
+                    // manejo de las excepciones específicas de Firebase
                     val mensajeError = when (task.exception) {
-                        is com.google.firebase.auth.FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil - Minimo 6 caracteres."
+                        is com.google.firebase.auth.FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil - Minimo 6 caracteres, 1 mayuscula y 1 numero."
                         is com.google.firebase.auth.FirebaseAuthUserCollisionException -> "Ya existe una cuenta con este correo."
                         is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "El formato del correo es inválido."
                         else -> "Error en el registro: ${task.exception?.message}"

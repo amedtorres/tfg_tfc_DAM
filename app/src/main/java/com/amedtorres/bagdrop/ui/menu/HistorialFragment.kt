@@ -42,7 +42,7 @@ class HistorialFragment : Fragment() {
     }
 
     private fun configurarRecyclerView() {
-        // Reutilizamos el Adapter, pero si están en el historial no deberían poder cancelar.
+        // Reutilizamos el Adapter, pero si están en el historial no se pueden cancelar
         historialAdapter = ReservasAdapter(emptyList(),
             onCancelarClick = { },
             onCompletarClick = { }

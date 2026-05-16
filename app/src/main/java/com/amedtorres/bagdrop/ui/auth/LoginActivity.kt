@@ -12,9 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 /**
  * @author: Amed Torres
- * @version: 1.0
- * @description: Activity de Login -  Clase que representa la vista de Login y gestiona la autenticación
- * */
+ */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
@@ -35,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // botón "Acceder"
+        // botón para Acceder
         binding.btnLogin.setOnClickListener {
             iniciarSesion()
         }
@@ -47,15 +45,15 @@ class LoginActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
-            // Nos saltamos el Login y lo mandamos directo a la app
+            // saltamos el Login y lo mandamos directo a la app
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-            finish() // Cerramos esta pantalla de Login para que no se quede de fondo
+            finish()
         }
     }
 
     private fun iniciarSesion() {
-        // Recogemos los datos eliminando espacios en blanco accidentales
+        // Recogemos los datos eliminando espacios en blanco
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
@@ -72,9 +70,9 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "¡Bienvenido a BagDrop!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                finish() // Cerramos el Login para que no pueda volver atrás con el botón físico
+                finish()
             } else {
-                // Si hay error (contraseña mal, etc.), lo mostramos
+                // Si hay error
                 Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
             }
         }

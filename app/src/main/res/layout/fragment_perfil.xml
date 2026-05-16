@@ -63,7 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardHeader" />
 
-    <!-- LISTA DE DATOS Y OPCIONES -->
     <LinearLayout
         android:id="@+id/layoutOpciones"
         android:layout_width="0dp"
@@ -201,7 +200,6 @@
             android:layout_marginHorizontal="16dp"
             android:background="?attr/colorOutlineVariant" />
 
-        <!-- Cambiar Contraseña -->
         <LinearLayout
             android:id="@+id/itemCambiarContrasena"
             android:layout_width="match_parent"
@@ -230,18 +228,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <!-- Icono de flechita para indicar que se puede tocar -->
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_adelante"
         />
-
         </LinearLayout>
-
     </LinearLayout>
 
-    <!-- BOTÓN CERRAR SESIÓN -->
     <Button
         android:id="@+id/btnCerrarSesion"
         android:layout_width="0dp"
