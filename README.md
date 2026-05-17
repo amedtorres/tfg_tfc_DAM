@@ -1,7 +1,7 @@
 # 🧳 BagDrop | TFC - TFG DAM
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-blue.svg?logo=kotlin)
-![Android Studio](https://img.shields.io/badge/Android_Studio-Iguana-3DDC84.svg?logo=android)
+![Android Studio](https://img.shields.io/badge/Android_Studio-Otter-3DDC84.svg?logo=android)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore%20%7C%20Auth-FFCA28.svg?logo=firebase)
 ![Material Design 3](https://img.shields.io/badge/Material_Design_3-UI-blueviolet)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
@@ -12,9 +12,17 @@ Este proyecto ha sido desarrollado como **Trabajo de Fin de Ciclo (TFC)** para e
 
 ---
 
-##  Vistazo a la Aplicación (Wireframes y Diseño)
+##  Visualización de la Aplicación (Wireframes y Diseño)
 
 ![Wireframes y Capturas de Pantalla de BagDrop](appBagDrop.png)
+
+---
+
+##  Descargar APK
+
+Para probar la aplicación directamente en un dispositivo físico o emulador sin necesidad de compilar el código fuente, puedes descargar el archivo ejecutable oficial listo para instalar.
+
+👉 **[Descargar BagDrop v1.0 APK](../../releases/latest)**
 
 ---
 
@@ -33,8 +41,9 @@ Este proyecto ha sido desarrollado como **Trabajo de Fin de Ciclo (TFC)** para e
 * **Lenguaje:** Kotlin
 * **Arquitectura:** Patrón Repositorio (Repository Pattern)
 * **Asincronía:** Kotlin Coroutines (`suspend`, `await`, `lifecycleScope`)
-* **Backend as a Service (BaaS):** * Firebase Authentication (Gestión de sesiones)
-    * Firebase Cloud Firestore (Base de datos en tiempo real)
+* **Backend as a Service (BaaS):**
+   * Firebase Authentication (Gestión de sesiones)
+   * Firebase Cloud Firestore (Base de datos en tiempo real)
 * **Servicios Externos:** Google Maps API
 
 ---
@@ -47,7 +56,7 @@ Si deseas compilar o auditar el código fuente en tu propio entorno de desarroll
    ```bash
    git clone https://github.com/amedtorres/tfg_tfc_DAM.git
 
-2. **Abrir en Android Studio (Versión Iguana o superior recomendada)**
+2. **Abrir en Android Studio (Versión Otter o superior recomendada)**
 
 3. **Configuración de Firebase:** Debes conectar tu propio proyecto de Firebase y añadir el archivo google-services.json en el directorio app/ del proyecto.
 
@@ -57,8 +66,9 @@ Por motivos de seguridad, la API Key ha sido retirada. Debes añadir tu propia c
 XML
 <meta-data
     android:name="com.google.android.geo.API_KEY"
-    android:value="TU_API_KEY_AQUI" /> 
-```
+    android:value="TU_API_KEY_AQUI" />
+````
+
 5. **Sincronizar Gradle y compilar (Run).**
 
 ---
