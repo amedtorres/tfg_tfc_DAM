@@ -6,7 +6,7 @@
 ![Material Design 3](https://img.shields.io/badge/Material_Design_3-UI-blueviolet)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
-**BagDrop** es una aplicación móvil nativa para Android diseñada para revolucionar la gestión de consignas de equipaje. Permite a los turistas localizar locales, comprobar la disponibilidad de taquillas en tiempo real y gestionar sus reservas de forma autónoma.
+**BagDrop** es una aplicación móvil nativa para Android diseñada para revolucionar la gestión de consignas de equipaje. Permite a los turistas localizar el local, comprobar la disponibilidad de taquillas en tiempo real y gestionar sus reservas de forma autónoma.
 
 Este proyecto ha sido desarrollado como **Trabajo de Fin de Ciclo (TFC)** para el Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM).
 
@@ -69,5 +69,4 @@ Amed Torres | Desarrollador de Aplicaciones Multiplataforma (DAM) 💻
 ---
 
 # Licencia
-Este proyecto se distribuye bajo la **Licencia MIT**. Siéntete libre de utilizar el código, siempre y cuando se reconozca la autoría original.
-
+Este proyecto se distribuye bajo la **Licencia MIT**.
